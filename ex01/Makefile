@@ -4,7 +4,7 @@ SRCS = main.cpp RPN.cpp
 
 INCLUDES = RPN.hpp 
 
-OBJS = $(SRCS=%.cpp=%.o)
+OBJS = $(SRCS:%.cpp=%.o)
 
 CXX = c++
 
@@ -25,4 +25,4 @@ fclean: clean
 
 re: fclean all 
 
-.PHONY: all clean fclean re
+.PHONY: re all clean fclean 
