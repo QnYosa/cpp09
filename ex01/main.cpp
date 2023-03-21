@@ -17,7 +17,6 @@ int main (int argc, char **argv)
 		return(-2);
 	}
 	std::stack<std::string> stack;
-	// fill_stack(arg, stack);
 	recursive_fill(arg, stack);
 	while (stack.empty() == false)
 	{

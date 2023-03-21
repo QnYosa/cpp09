@@ -1,7 +1,5 @@
 #include "RPN.hpp"
 
-// Stack ?
-
 bool is_a_sign(char c)
 {
 	if (c == '+' || c == '-' ||c == '*' ||c == '/')
@@ -47,7 +45,6 @@ char find_sign(std::string &arg, int &pos)
 		if (is_a_sign(arg[i]) == true)
 		{
 			pos = i;
-			// std::cout << "arg[i]" << arg[i] << std::endl;
 			return (arg[i]);
 		}
 	}	
@@ -114,11 +111,15 @@ void	recursive_fill(std::string &arg, std::stack<std::string> &stack)
 	int size = signPosition - first_arg + 1;
 	if (is_empty_string(arg) == true)
 		return ;
-	if (first_arg == -1)
+	else if (first_arg == -1)
 		return ;
-	stack.push(arg.substr(first_arg, size));
-	arg = arg.erase(first_arg, size);
-	return (recursive_fill(arg, stack));
+	else
+	{
+		std::string toPush = arg.substr(first_arg, size);
+		arg = arg.erase(first_arg, size);
+		recursive_fill(arg, stack);
+		stack.push(toPush);
+	}
 }
 
 std::string	find_operation(std::string operation, char sign)
