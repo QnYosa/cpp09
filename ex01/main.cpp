@@ -7,9 +7,15 @@ int main (int argc, char **argv)
 	std::string arg;
 	arg = argv[1];
 	if (check_numbers(arg) == false)
+	{
 		std::cout << "Negative numbers and numbers above 9 are strictly forbidden" << std::endl;
+		return (-1);
+	}
 	if (check_values(arg) == false)
+	{
 		std::cout << "invalid caracters\n";
+		return(-2);
+	}
 	std::stack<std::string> stack;
 	// fill_stack(arg, stack);
 	recursive_fill(arg, stack);
