@@ -1,7 +1,7 @@
 #include "BitcoinExchange.hpp"
 
 // MAP ? 
-
+-
 int main(int argc, char **argv)
 {
 	if (argc != 2)
@@ -21,7 +21,4 @@ int main(int argc, char **argv)
 		std::cout << "Error\n";
 		return (-2);
 	}
-	// parsing du fichier txt ou autre.
-	// checker partout si le format date est respecte a chaque fois
-	// check if value is good 
 }

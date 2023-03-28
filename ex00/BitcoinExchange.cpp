@@ -1,26 +1,42 @@
 #include "BitcoinExchange.hpp"
 // map ? int, int 
 
+int	check_value(std::string line)
+{
+	int pos;
+
+	pos = line.find('|');
+	if (line.find('|') == std::string::npos)
+		return (-14);
+	line = line.substr(pos, line.size() - 1);
+	if (atoi(line.c_str()) < 0)
+		return (-13);
+	return (0);
+}
 
 int	date_format(std::string line)
 {
 	int pos = 0;
 	int number;
-	// faire des atoi et checker les bonnes values
-	if (atoi(line.c_str()) < 1 && atoi(line.c_str()) > 31)
-		return (BAD_DAY_VALUE);
+
+	number = atoi(line.c_str());
+	if (number < 0)
+		return (BAD_YEAR_VALUE);
 	pos = line.find('-');
 	if (line.find('-') == std::string::npos)
 		return(-1);
 	line = line.substr(pos + 1, line.size() -1);
-	if (atoi(line.c_str()) < 1 && atoi(line.c_str()) > 12)
+	number = atoi(line.c_str());
+	if (number < 1 || number > 12)
 		return (BAD_MONTH_VALUE);
 	pos = line.find('-');
 	if (line.find('-') == std::string::npos)
 		return(-1);
 	line = line.substr(pos + 1, line.size() -1);
+	number = atoi(line.c_str());
+	if (number < 1 || number > 31)
+		return (BAD_DAY_VALUE);
 	pos = line.find('-');
-	// std::cout << pos << std::endl;
 	if (line.find('-') != std::string::npos)
 		return(-1);
 	return (0);
@@ -55,9 +71,12 @@ int	valid_Syntaxis(std::ifstream &file)
 		{
 			return (-3);
 		}
+		if (check_value(content) != 0)
+		{
+			return (-23);
+		}
 		std::cout << content << std::endl;
 	}
-	// std::cout << content << std::endl;
 	return (0);
 }
 
