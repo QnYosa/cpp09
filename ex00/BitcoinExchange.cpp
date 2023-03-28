@@ -9,7 +9,7 @@ int	check_value(std::string line)
 	if (line.find('|') == std::string::npos)
 		return (-14);
 	line = line.substr(pos, line.size() - 1);
-	if (atoi(line.c_str()) < 0)
+	if (atoi(line.c_str()) < 0 || atoi(line.c_str()) > 1000)
 		return (-13);
 	return (0);
 }
@@ -77,6 +77,14 @@ int	valid_Syntaxis(std::ifstream &file)
 		}
 		std::cout << content << std::endl;
 	}
+	return (0);
+}
+
+
+int	fill_charts(std::map<int, int> charts)
+{
+	(void)charts;
+	
 	return (0);
 }
 
