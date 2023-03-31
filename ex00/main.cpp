@@ -1,7 +1,5 @@
 #include "BitcoinExchange.hpp"
 
-// MAP ? 
-
 int main(int argc, char **argv)
 {
 	if (argc != 2)
@@ -9,23 +7,26 @@ int main(int argc, char **argv)
 		std::cout << "Error\n";
 		return -1;
 	}
-	std::ifstream file;
-	file.open(argv[1]);
-	if (!file)
+	std::ifstream wallet;
+	wallet.open(argv[1]);
+	if (!wallet)
 	{
-		std::cout << "File does not exists\n";
+		std::cout << "wallet does not exists\n";
 		return (-1);
 	}
-	if (valid_Syntaxis(file) < 0)
+	// checker la length des mois et des jours et ajouter des 0
+	if (valid_Syntaxis(wallet) < 0)
 	{
 		std::cout << "Error\n";
 		return (-2);
 	}
+	if (wallet)
+	{
+		std::cout << "HEllo\n";
+	}
 	std::map<int, int>charts;
 	fill_charts(charts);
-	// read the csv file 
-	// add content of csv file to map 
-	// loop over the content of the file.
-	// convert the date to the android format. 
-	// fill the map.
+	std::ifstream wallet2;
+	wallet2.open(argv[1]);
+	searchAndPrintResult(wallet2, charts);
 }
