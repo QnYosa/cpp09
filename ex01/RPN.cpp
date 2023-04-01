@@ -145,7 +145,9 @@ std::string	find_operation(std::string operation, char sign)
 			result = divide(a, b);
 			break;
 	}
-	return (std::to_string(result));
+	std::stringstream streamResult;
+	streamResult << result;
+	return (streamResult.str());
 }
 
 int	add(int a, int b)

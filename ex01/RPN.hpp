@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <stack>
+#include <cstdlib>
+#include <sstream>
 
 bool		check_numbers(std::string);
 bool		check_values(std::string);
