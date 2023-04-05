@@ -45,10 +45,16 @@ int main(int argc, char **argv)
 	fillVector(vec, argv);
 	fillDeque(deq, argv);
 	std::vector<int>::iterator it;
-	for (it = vec.begin(); it != vec.end(); it++)
-	{
-		std::cout << "it = " << *it << std::endl;
-	}
-	sort(vec);c
+	// for (it = vec.begin(); it != vec.end(); it++)
+	// {
+	// 	std::cout << "it = " << *it << std::endl;
+	// }
+	int n =vec.size();
+    int threshold = 3; // threshold value for when to switch to insertion sort
+    merge_insertion_sort(vec, 0, n - 1, threshold);
+    for (int i = 0; i < n; i++)
+        std::cout <<vec[i] << " ";
+    std::cout << std::endl;
+
 	return (0);
 }
