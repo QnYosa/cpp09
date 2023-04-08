@@ -1,9 +1,12 @@
 #include "RPN.hpp"
 
-int main (int argc, char **argv)
+int main(int argc, char **argv)
 {
 	if (argc != 2)
+	{
 		std::cout << "Error" << std::endl;
+		return (-1);
+	}
 	std::string arg;
 	arg = argv[1];
 	if (check_numbers(arg) == false)
@@ -14,14 +17,10 @@ int main (int argc, char **argv)
 	if (check_values(arg) == false)
 	{
 		std::cout << "invalid caracters\n";
-		return(-2);
+		return (-2);
 	}
-	std::stack<std::string> stack;
+	std::stack<std::string, std::list<std::string> > stack;
 	recursive_fill(arg, stack);
-	while (stack.empty() == false)
-	{
-		std::cout << "top =>" << stack.top() << std::endl;
-		stack.pop();
-	}
-	// lire en commencant ppar les signes et reperer les deux chiffres a sa gauche. 
+	solve(stack);
+	// lire en commencant ppar les signes et reperer les deux chiffres a sa gauche.
 }

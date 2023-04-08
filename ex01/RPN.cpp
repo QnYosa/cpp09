@@ -69,27 +69,6 @@ int		find_first_argument(std::string arg, int signPosition)
 	return (index_last_number_seen);
 }
 
-void	fill_stack(std::string &arg, std::stack<std::string> &stack)
-{
-	int signPosition = -1;
-	char sign = 'F';
-	int first_arg = -1;
-	(void)stack;
-	for (;arg.c_str();)
-	{
-		sign = find_sign(arg, signPosition);
-		first_arg = find_first_argument(arg, signPosition);
-		std::cout << arg.substr(first_arg, signPosition) << std::endl;
-		std::cout << sign << std::endl;
-		std::cout << find_operation(arg.substr(first_arg, signPosition), sign) << std::endl;
-		// add to stack 
-		// do the operation 
-		// convert the result to a string
-		// add to the begging of the first item of the stack.
-		break;
-	}
-}
-
 bool		is_empty_string(std::string &arg)
 {
 	if (arg.empty())
@@ -102,11 +81,15 @@ bool		is_empty_string(std::string &arg)
 	return (true);
 }
 
-void	recursive_fill(std::string &arg, std::stack<std::string> &stack)
+void	recursive_fill(std::string &arg, std::stack<std::string, std::list<std::string> > &stack)
 {
 	int signPosition = -1;
 	int first_arg = -1;
-	find_sign(arg, signPosition);
+	if (find_sign(arg, signPosition) == 'F' && is_empty_string(arg) == false)
+	{
+		std::cout << " Error\n";
+		exit(0) ;
+	}
 	first_arg = find_first_argument(arg, signPosition);
 	int size = signPosition - first_arg + 1;
 	if (is_empty_string(arg) == true)
@@ -122,13 +105,40 @@ void	recursive_fill(std::string &arg, std::stack<std::string> &stack)
 	}
 }
 
+int	solve(std::stack<std::string, std::list<std::string> > &stack)
+{
+	std::string sign;
+	std::string result;
+	while (stack.empty() == false)
+	{
+		// std::cout << "top => " << stack.top() << std::endl;
+		sign = stack.top().substr(stack.top().size() - 1, stack.top().length());
+		// std::cout << "end => " << sign << std::endl;
+		result = find_operation(stack.top(), sign[0]);
+		if (result == "fail")
+			return (-1);
+		stack.pop();
+		if ((stack.empty() == true))
+			break ;
+		result += " " + stack.top();
+		stack.top() = result; 
+	}
+	std::cout << result << std::endl;
+	return (0);
+} 
+
 std::string	find_operation(std::string operation, char sign)
 {
-	int a = atoi(operation.c_str());
+	int a, b;
+	if (atoi(operation.c_str()))
+		a = atoi(operation.c_str());
+	else
+		return ("fail");
 	std::string secondPart = operation.substr(operation.find(' ') + 1, operation.length() - 1);
-	int b = atoi(secondPart.c_str());
-	std::cout << "a = " << a << std::endl;
-	std::cout << "b = " << b << std::endl;
+	if (atoi(operation.c_str()))
+		b = atoi(secondPart.c_str());
+	else
+		return ("fail");
 	int result = 0;
 	switch(sign)
 	{
@@ -147,6 +157,7 @@ std::string	find_operation(std::string operation, char sign)
 	}
 	std::stringstream streamResult;
 	streamResult << result;
+	// std::cout << "salut Stream => " << streamResult.str() << std::endl;
 	return (streamResult.str());
 }
 
