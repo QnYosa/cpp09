@@ -15,17 +15,17 @@ int main(int argc, char **argv)
 		return (-1);
 	}
 	// checker la length des mois et des jours et ajouter des 0
-	if (valid_Syntaxis(wallet) < 0)
-	{
-		std::cout << "Error\n";
-		return (-2);
-	}
-	if (wallet)
-	{
-		std::cout << "HEllo\n";
-	}
-	std::map<int, int>charts;
-	fill_charts(charts);
+	// if (valid_Syntaxis(wallet) < 0)
+	// {
+	// 	std::cout << "Error\n";
+	// 	return (-2);
+	// }
+	// if (wallet)
+	// {
+	// 	std::cout << "HEllo\n";
+	// }
+	std::map<int, double>charts;
+	fill_charts(charts); // carre
 	std::ifstream wallet2;
 	wallet2.open(argv[1]);
 	searchAndPrintResult(wallet2, charts);

@@ -8,31 +8,31 @@ int	check_value(std::string line)
 	if (line.find('|') == std::string::npos)
 		return (-14);
 	line = line.substr(pos, line.size() - 1);
-	if (atoi(line.c_str()) < 0 || atoi(line.c_str()) > 1000)
+	if (atof(line.c_str()) < 0 || atof(line.c_str()) > 1000)
 		return (-13);
 	return (0);
 }
 
 int	date_format(std::string line)
 {
-	int pos = 0;
-	int number;
+	int 	pos = 0;
+	double	number;
 
-	number = atoi(line.c_str());
+	number = atof(line.c_str());
 	if (number < 0)
 		return (BAD_YEAR_VALUE);
 	pos = line.find('-');
 	if (line.find('-') == std::string::npos)
 		return(-1);
 	line = line.substr(pos + 1, line.size() -1);
-	number = atoi(line.c_str());
+	number = atof(line.c_str());
 	if (number < 1 || number > 12)
 		return (BAD_MONTH_VALUE);
 	pos = line.find('-');
 	if (line.find('-') == std::string::npos)
 		return(-1);
 	line = line.substr(pos + 1, line.size() -1);
-	number = atoi(line.c_str());
+	number = atof(line.c_str());
 	if (number < 1 || number > 31)
 		return (BAD_DAY_VALUE);
 	pos = line.find('-');
@@ -74,7 +74,7 @@ int	valid_Syntaxis(std::ifstream &file)
 		{
 			return (-23);
 		}
-		std::cout << content << std::endl;
+		// std::cout << content << std::endl;
 	}
 	return (0);
 }
@@ -125,7 +125,8 @@ int	cleanDate(std::string &content, std::string &key, int mode)
 	}
 	return (0);
 }
-int	fill_charts(std::map<int, int> &charts)
+
+int	fill_charts(std::map<int, double> &charts)
 {
 	std::ifstream charts_csv;
 	charts_csv.open("data.csv");
@@ -141,7 +142,7 @@ int	fill_charts(std::map<int, int> &charts)
 	{
 		fill_key(content, key);
 		fill_value(content, value);
-		charts.insert(std::pair<int, int>(atoi(key.c_str()), atoi(value.c_str())));
+		charts.insert(std::pair<int, double>(atoi(key.c_str()), atof(value.c_str())));
 	}
 	return (0);
 }
@@ -154,9 +155,9 @@ int getValue(std::string &line, std::string &value)
 	return (0);
 }
 
-int findClosestDate(std::string &date, std::map<int, int> &map)
+int findClosestDate(std::string &date, std::map<int, double> &map)
 {
-	std::map<int, int>::iterator it;
+	std::map<int, double>::iterator it;
 
 	int lowest_range;
 	lowest_range = atoi(date.c_str()) - map.begin()->first;
@@ -174,20 +175,20 @@ int findClosestDate(std::string &date, std::map<int, int> &map)
 	return (closest);
 }
 
-int	finalPrint(int &closest, double number, std::map<int, int> &charts, std::string &rawDate)
+int	finalPrint(int &closest, double number, std::map<int, double> &charts, std::string &rawDate)
 {
-	int valueChart;
-	std::map<int, int>::iterator it;
+	double valueChart;
+	std::map<int, double>::iterator it;
 	it = charts.find(closest);
 	valueChart = it->second;
 	// std::cout << "number => " << number << std::endl;  
 	// std::cout << "ValueChart => " << valueChart << std::endl;  
 	// std::cout << "result => " << valueChart * number << std::endl;
-	std::cout << rawDate << " => " << valueChart << " " << valueChart * number << std::endl;
+	std::cout << rawDate << " => " << number << " = " << valueChart * number << std::endl;
 	return (0);
 }
 
-int	searchAndPrintResult(std::ifstream &wallet, std::map<int, int> &charts)
+int	searchAndPrintResult(std::ifstream &wallet, std::map<int, double> &charts)
 {
 	std::string lineWallet; 
 	std::string dateAndroidFormat;
@@ -196,6 +197,9 @@ int	searchAndPrintResult(std::ifstream &wallet, std::map<int, int> &charts)
 	int closest = -1;
 	while (getline(wallet, lineWallet))
 	{
+		// if (valid_Syntaxis(line) < 0)
+		// 	std::cout << "Error\n";
+		// checker via les lignes
 		cleanDate(lineWallet, raw_date, 0);
 		cleanDate(lineWallet, dateAndroidFormat, 1);
 		//std::cout << "dateAndroidFormat " << dateAndroidFormat << std::endl;

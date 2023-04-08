@@ -14,8 +14,8 @@
 int	check_hyphens(std::string &line);
 int	valid_Syntaxis(std::ifstream &file);
 int	check_value(std::string line);
-int	fill_charts(std::map<int, int> &charts);
-int	searchAndPrintResult(std::ifstream &wallet, std::map<int, int> &charts);
-void printCharts(std::map<int, int> &map);
+int	fill_charts(std::map<int, double> &charts);
+int	searchAndPrintResult(std::ifstream &wallet, std::map<int, double> &charts);
+void printCharts(std::map<int, double> &map);
 
 #endif
