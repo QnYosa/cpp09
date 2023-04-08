@@ -1,7 +1,5 @@
 #include "PmergeMe.hpp"
 
-// vector, deque, multiset
-
 int	fillVector(std::vector<int> &vec, char **argv)
 {
 	for (int i = 1; argv[i]; i++)
@@ -41,20 +39,34 @@ int main(int argc, char **argv)
 		return (-1);
 	std::vector <int> vec;
 	std::deque <int> deq;
-	std::multiset<int> multi;
 	fillVector(vec, argv);
 	fillDeque(deq, argv);
-	std::vector<int>::iterator it;
-	// for (it = vec.begin(); it != vec.end(); it++)
-	// {
-	// 	std::cout << "it = " << *it << std::endl;
-	// }
-	int n =vec.size();
-    int threshold = 3; // threshold value for when to switch to insertion sort
-    merge_insertion_sort(vec, 0, n - 1, threshold);
-    for (int i = 0; i < n; i++)
-        std::cout <<vec[i] << " ";
-    std::cout << std::endl;
 
+	int n =vec.size();
+	// std::cout << "Before:	";
+    // for (int i = 0; i < n; i++)
+	// {
+    //     std::cout <<vec[i] << " ";
+    //     // std::cout <<deq[i] << " ";
+	// }
+    std::cout << std::endl;
+    int threshold = 3; // threshold value for when to switch to insertion sort
+	std::clock_t start = std::clock();
+	merge_insertion_sort(vec, 0, n - 1, threshold);
+    std::clock_t end = std::clock();
+    double elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000000;
+	// std::cout << "After:	";
+    // for (int i = 0; i < n; i++)
+	// {
+    //     std::cout <<vec[i] << " ";
+    //     // std::cout <<deq[i] << " ";
+	// }
+    std::cout << std::endl;
+    std::cout << "Time to process a range of " <<  argc - 1 << " elements with std::vector " << elapsed_secs << " us" << std::endl;
+	start = std::clock();
+	mergeInsertionSortDeque(deq, 0, n - 1, threshold);
+	end = std::clock();
+	elapsed_secs = (static_cast<double>(end - start) / CLOCKS_PER_SEC) * 1000000;
+    std::cout << "Time to process a range of " <<  argc - 1 << " elements with std::deque " << elapsed_secs << " us" << std::endl;
 	return (0);
 }

@@ -68,3 +68,67 @@ void merge_insertion_sort(std::vector<int>& arr, int left, int right, int thresh
         }
     }
 }
+
+void mergeDeque(std::deque<int>& arr, int left, int mid, int right)
+{
+    std::deque<int> temp;
+    int i = left, j = mid + 1;
+    
+    while (i <= mid && j <= right) {
+        if (arr[i] < arr[j]) {
+            temp.push_back(arr[i]);
+            i++;
+        } else {
+            temp.push_back(arr[j]);
+            j++;
+        }
+    }
+
+    while (i <= mid) {
+        temp.push_back(arr[i]);
+        i++;
+    }
+    
+    while (j <= right) {
+        temp.push_back(arr[j]);
+        j++;
+    }
+
+    for (int k = left; k <= right; k++) {
+        arr[k] = temp.front();
+        temp.pop_front();
+    }
+}
+
+void mergeInsertionSortDeque(std::deque<int>& arr, int left, int right, int k)
+{
+    if (left < right) {
+        if (right - left + 1 <= k)
+        {
+            for (int i = left + 1; i <= right; i++)
+            {
+                int key = arr[i];
+                int j = i - 1;
+                
+                while (j >= left && arr[j] > key) {
+                    arr[j+1] = arr[j];
+                    j--;
+                }
+                
+                arr[j+1] = key;
+            }
+        }
+        else 
+        {
+            int mid = left + (right - left) / 2;
+            mergeInsertionSortDeque(arr, left, mid, k);
+            mergeInsertionSortDeque(arr, mid+1, right, k);
+            mergeDeque(arr, left, mid, right);
+        }
+    }
+}
+
+void mergeInsertionSort(std::deque<int>& arr, int k)
+{
+    mergeInsertionSortDeque(arr, 0, arr.size()-1, k);
+}
