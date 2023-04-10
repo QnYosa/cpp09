@@ -4,7 +4,7 @@ SRCS = main.cpp PmergeMe.cpp
 
 INCLUDES = PmergeMe.hpp
 
-OBJS = $(SRCS=%.cpp=%.o)
+OBJS = $(SRCS:%.cpp=%.o)
 
 CXX = c++ 
 
