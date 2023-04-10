@@ -7,9 +7,17 @@ int	check_value(std::string line)
 	pos = line.find('|');
 	if (line.find('|') == std::string::npos)
 		return (-14);
-	line = line.substr(pos, line.size() - 1);
-	if (atof(line.c_str()) < 0 || atof(line.c_str()) > 1000)
+	line = line.substr(pos + 1, line.size() - 1);
+	if (atof(line.c_str()) < 0)
+	{
+		std::cout << "Error: not a positive number.\n";
+		return (-12);
+	}
+	if (atof(line.c_str()) > 1000)
+	{
+		std::cout << "Error: too large number.\n";
 		return (-13);
+	}
 	return (0);
 }
 
@@ -53,29 +61,28 @@ int	check_hyphens(std::string &line)
 	return (0);
 }
 
-int	valid_Syntaxis(std::ifstream &file)
+int	valid_Syntaxis(std::string &line)
 {
-	std::string content;
-	while (getline(file, content))
+	if (line.find('|') == std::string::npos)
 	{
-		if (content.find('|') == std::string::npos)
-		{
-			return (-1);
-		}
-		if (check_hyphens(content) != 0)
-		{
-			return (-2);
-		}
-		if (date_format(content) != 0)
-		{
-			return (-3);
-		}
-		if (check_value(content) != 0)
-		{
-			return (-23);
-		}
-		// std::cout << content << std::endl;
+		std::cout << "Error: bad input => " << line << std::endl;
+		return (-1);
 	}
+	if (check_value(line) != 0)
+	{
+		return (-23);
+	}
+	if (check_hyphens(line) != 0)
+	{
+		std::cout << "Error: bad input => " << line << std::endl;
+		return (-2);
+	}
+	if (date_format(line) != 0)
+	{
+		std::cout << "Error: bad input => " << line.substr(0, line.find('|')) << std::endl;
+		return (-3);
+	}
+	// std::cout << content << std::endl;
 	return (0);
 }
 
@@ -199,8 +206,8 @@ int	searchAndPrintResult(std::ifstream &wallet, std::map<int, double> &charts)
 	int closest = -1;
 	while (getline(wallet, lineWallet))
 	{
-		// if (valid_Syntaxis(line) < 0)
-		// 	std::cout << "Error\n";
+		if (valid_Syntaxis(lineWallet) < 0)
+			continue;
 		// checker via les lignes
 		cleanDate(lineWallet, raw_date, 0);
 		cleanDate(lineWallet, dateAndroidFormat, 1);

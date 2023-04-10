@@ -19,8 +19,7 @@ int main(int argc, char **argv)
 		std::cout << "invalid caracters\n";
 		return (-2);
 	}
-	std::stack<std::string, std::list<std::string> > stack;
-	recursive_fill(arg, stack);
-	solve(stack);
+	// recursive_fill(arg, stack);
+	solve(arg);
 	// lire en commencant ppar les signes et reperer les deux chiffres a sa gauche.
 }

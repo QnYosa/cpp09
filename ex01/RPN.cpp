@@ -34,37 +34,45 @@ bool check_numbers(std::string arg)
 	return (true);
 }
 
-char find_sign(std::string &arg, int &pos)
+char find_sign(std::string &arg)
 {
 	if (arg.empty())
 		return ('F');
+	char sign;
 	for (int i = 0; arg[i]; i++)
 	{
 		if (is_a_sign(arg[i]) == true)
 		{
-			pos = i;
-			return (arg[i]);
+			sign = arg[i];
+			arg = arg.substr(i + 1, arg.size() - 1);
+			return (sign);
 		}
 	}	
 	return ('F');
 }
 
-int		find_first_argument(std::string arg, int signPosition)
+static int		find_first_argument(std::string line)
 {
-	int number_seen = 0;
-	int index_last_number_seen = 0;
-	int i = signPosition;
-	if (arg.empty() == true)
-		return (-1);
-	for (; number_seen < 2 && i >= 0; i--)
+	for(int i = 0; line[i]; i++)
 	{
-		if (isdigit(arg[i]))
-		{
-			number_seen++;
-			index_last_number_seen = i;
-		}
+		if (isdigit(line[i]))
+			return (i);
 	}
-	return (index_last_number_seen);
+	return (-1);
+}
+
+int	consec_numbers(std::string &line)
+{
+	int numbers_seen;
+	numbers_seen = 0;
+	for (int i = 0; line[i]; i++)
+	{
+		if (is_a_sign(line[i]))
+			break;
+		if (isdigit(line[i]))
+			numbers_seen++;
+	}
+	return (numbers_seen);
 }
 
 bool		is_empty_string(std::string &arg)
@@ -79,62 +87,53 @@ bool		is_empty_string(std::string &arg)
 	return (true);
 }
 
-void	recursive_fill(std::string &arg, std::stack<std::string, std::list<std::string> > &stack)
+int	solve(std::string &line)
 {
-	int signPosition = -1;
-	int first_arg = -1;
-	if (find_sign(arg, signPosition) == 'F' && is_empty_string(arg) == false)
+	std::stack<std::string, std::list<std::string> > stack;
+	int number;
+	char sign;
+	std::string to_push;
+	while (line.size() != 0)
 	{
-		std::cout << " Error\n";
-		exit(0) ;
+		int number_seen = consec_numbers(line);
+		if (number_seen > 0)
+		{
+			number = find_first_argument(line);
+			to_push = line[number];
+			stack.push(to_push);
+			line = line.substr(number + 1, line.size() - 1);
+		}
+		if (number_seen == 2)
+		{
+			number = find_first_argument(line);
+			to_push = line[number];
+			stack.push(to_push);
+			line = line.substr(number + 1, line.size() - 1);
+		}
+		sign = find_sign(line);
+		find_operation(stack, sign);
+		if (is_empty_string(line))
+			break;
 	}
-	first_arg = find_first_argument(arg, signPosition);
-	int size = signPosition - first_arg + 1;
-	if (is_empty_string(arg) == true)
-		return ;
-	else if (first_arg == -1)
-		return ;
-	else
-	{
-		std::string toPush = arg.substr(first_arg, size);
-		arg = arg.erase(first_arg, size);
-		recursive_fill(arg, stack);
-		stack.push(toPush);
-	}
-}
-
-int	solve(std::stack<std::string, std::list<std::string> > &stack)
-{
-	std::string sign;
-	std::string result;
-	while (stack.empty() == false)
-	{
-		// std::cout << "top => " << stack.top() << std::endl;
-		sign = stack.top().substr(stack.top().size() - 1, stack.top().length());
-		// std::cout << "end => " << sign << std::endl;
-		result = find_operation(stack.top(), sign[0]);
-		if (result == "fail")
-			return (-1);
-		stack.pop();
-		if ((stack.empty() == true))
-			break ;
-		result += " " + stack.top();
-		stack.top() = result; 
-	}
-	std::cout << result << std::endl;
+	displayStack(stack);
 	return (0);
 } 
 
-std::string	find_operation(std::string operation, char sign)
+std::string	find_operation(std::stack<std::string, std::list<std::string> > &stack, char &sign)
 {
 	int a, b;
-	if (atoi(operation.c_str()))
-		a = atoi(operation.c_str());
+	if (atoi(stack.top().c_str()))
+	{
+		b = atoi(stack.top().c_str());
+		stack.pop();
+	}
 	else
 		return ("fail");
-	std::string secondPart = operation.substr(operation.find(' ') + 1, operation.length() - 1);
-	if (atoi(operation.c_str()))
-		b = atoi(secondPart.c_str());
+	if (atoi(stack.top().c_str()))
+	{
+		a = atoi(stack.top().c_str());
+		stack.pop();
+	}
 	else
 		return ("fail");
 	int result = 0;
@@ -155,8 +154,18 @@ std::string	find_operation(std::string operation, char sign)
 	}
 	std::stringstream streamResult;
 	streamResult << result;
-	// std::cout << "salut Stream => " << streamResult.str() << std::endl;
+	stack.push(streamResult.str());
 	return (streamResult.str());
+}
+
+void	displayStack(std::stack<std::string, std::list<std::string> > stack)
+{
+	
+	while (stack.size() > 0)
+	{
+		std::cout << stack.top() << std::endl;
+		stack.pop();
+	}
 }
 
 int	add(int a, int b)
