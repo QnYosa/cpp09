@@ -34,8 +34,6 @@ bool check_numbers(std::string arg)
 	return (true);
 }
 
-// find les signes prendre les deux chiffres et remplir la stack.
-
 char find_sign(std::string &arg, int &pos)
 {
 	if (arg.empty())
