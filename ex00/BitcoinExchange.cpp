@@ -1,5 +1,40 @@
 #include "BitcoinExchange.hpp"
 
+static int	checkComa(std::string &line)
+{
+	int coma = 0;
+	if (line.find('.') == std::string::npos)
+		return (0);
+	coma = line.find('.');
+	if (!isdigit(line[coma - 1]))
+	{
+		std::cout << "No number before the coma\n";
+		return (-15);
+	}
+	if (!isdigit(line[coma + 1]))
+	{
+		std::cout << "No number after the coma\n";
+
+		return (-15);
+	}
+	return (0);
+}
+
+static int	checkIfNumber(std::string &line)
+{
+	int numbers = 0;
+	for (unsigned long i = 0; i < line.length(); i++)
+	{
+		if (isdigit(line[i]))
+		{
+			numbers++;
+		}
+	}
+	if (numbers == 0)
+		std::cout << "Invalid value\n";
+	return (numbers);
+}
+
 int	check_value(std::string line)
 {
 	int pos;
@@ -8,6 +43,10 @@ int	check_value(std::string line)
 	if (line.find('|') == std::string::npos)
 		return (-14);
 	line = line.substr(pos + 1, line.size() - 1);
+	if (checkIfNumber(line) == 0)
+		return (-14);
+	if (checkComa(line) < 0)
+		return (-15);
 	if (atof(line.c_str()) < 0)
 	{
 		std::cout << "Error: not a positive number.\n";

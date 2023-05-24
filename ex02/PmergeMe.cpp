@@ -25,7 +25,7 @@ void merge(std::vector<int> &arr, int left, int mid, int right)
     std::vector<int> right_half(n2);
 
     for (int i = 0; i < n1; i++)
-        left_half[i] = arr[left + i]; // mettre la partie guche en partie
+        left_half[i] = arr[left + i]; // mettre la partie gauche en partie
     // gauche du vecteur et faire de meme avec la partie droite afin d'avoir
     // un seul vecteur.
     for (int j = 0; j < n2; j++)
